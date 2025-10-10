@@ -1,0 +1,9 @@
+## Title: StaggerTracker
+## Version: 1.0
+## APIVersion: 101047
+## AddOnVersion: 100
+## Author: |cFFFF00andy.s|r, |c00fffe@B7TxSpeed|r
+## SavedVariables: StaggerTrackerSV
+
+main.lua
+ui.xml

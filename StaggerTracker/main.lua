@@ -1,6 +1,6 @@
 StaggerTracker = {
 	name = "StaggerTracker",
-	version = "0.3",
+	version = "1.0",
 
 	varVersion = 1, -- savedVariables version
 	uiLocked = true,
@@ -22,6 +22,7 @@ local ST = StaggerTracker
 local NAME = ST.name
 local EM = EVENT_MANAGER
 local SV
+local EARTHEN_HEART_ID = 37
 
 local inCombat = false
 
@@ -41,6 +42,12 @@ local function GetTargetStacks()
 		end
 	end
 	return 0
+end
+
+-- Check if skill line is active.
+local function IsSkillLineActive(skillLineId)
+	local skillLineData = SKILLS_DATA_MANAGER:GetSkillLineDataById(skillLineId)
+	return skillLineData and skillLineData:IsActive()
 end
 
 local function Initialize()
@@ -123,7 +130,8 @@ local function Initialize()
 		end
 	end
 
-	if GetUnitClassId('player') == 1 then -- register events only for dragonknights
+	-- Register events.
+	local function registerEvents()
 		EM:RegisterForEvent(NAME, EVENT_PLAYER_ACTIVATED, SkillCheck)
 		EM:RegisterForEvent(NAME, EVENT_PLAYER_COMBAT_STATE, CombatState)
 		EM:RegisterForEvent(NAME, EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, SkillCheck)
@@ -135,6 +143,20 @@ local function Initialize()
 		EM:AddFilterForEvent(NAME, EVENT_EFFECT_CHANGED, REGISTER_FILTER_SOURCE_COMBAT_UNIT_TYPE, COMBAT_UNIT_TYPE_PLAYER)
 	end
 
+	-- Check if earthen heart skill line has become active. 
+	local function skillLineAddedHandler()
+		if IsSkillLineActive(EARTHEN_HEART_ID) then
+			registerEvents()
+			EM:UnregisterForEvent(NAME.."SkillLineAdded", EVENT_SKILL_LINE_ADDED)
+		end
+	end
+
+	-- Register events only if earthen heart skill line is active.
+	if IsSkillLineActive(EARTHEN_HEART_ID) then 
+		registerEvents()
+	else
+		EM:RegisterForEvent(NAME.."SkillLineAdded", EVENT_SKILL_LINE_ADDED, skillLineAddedHandler)
+	end
 end
 
 function ST.Move()
