@@ -1,6 +1,6 @@
 StaggerTracker = {
 	name = "StaggerTracker",
-	version = "1.0",
+	version = "1.1",
 
 	varVersion = 1, -- savedVariables version
 	uiLocked = true,
@@ -9,8 +9,7 @@ StaggerTracker = {
 }
 
 local SLOT_ID = 31816 -- Stone Giant button id
-local SLOT_ID_PROJ = 133027 -- Stone Giant projectile button id
-local ABILITY_ID = 134336 -- Stagger effect id
+local ABILITY_ID = 134340 -- Heat Shock effect id
 local STATES = {
 	[0] = {1,  0, 0},
 	[1] = {1, .5, 0},
@@ -102,7 +101,7 @@ local function Initialize()
 		for i = 3, 7 do
 			local slot1 = GetSlotBoundId(i, HOTBAR_CATEGORY_PRIMARY)
 			local slot2 = GetSlotBoundId(i, HOTBAR_CATEGORY_BACKUP)
-			if SLOT_ID == slot1 or SLOT_ID == slot2 or SLOT_ID_PROJ == slot1 or SLOT_ID_PROJ == slot2 then
+			if SLOT_ID == slot1 or SLOT_ID == slot2 then
 				stActive = true
 				break
 			end
@@ -125,8 +124,6 @@ local function Initialize()
 		local id = GetSlotBoundId(n)
 		if id == SLOT_ID then
 			StaggerTrackerControl_Icon:SetDesaturation(1)
-		elseif id == SLOT_ID_PROJ then
-			StaggerTrackerControl_Icon:SetDesaturation(0)
 		end
 	end
 
