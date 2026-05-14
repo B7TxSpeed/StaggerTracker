@@ -119,20 +119,11 @@ local function Initialize()
 		UpdateControl()
 	end
 
-	-- Initial cast / projectile.
-	local function OnSlotUpdated(_, n)
-		local id = GetSlotBoundId(n)
-		if id == SLOT_ID then
-			StaggerTrackerControl_Icon:SetDesaturation(1)
-		end
-	end
-
 	-- Register events.
 	local function registerEvents()
 		EM:RegisterForEvent(NAME, EVENT_PLAYER_ACTIVATED, SkillCheck)
 		EM:RegisterForEvent(NAME, EVENT_PLAYER_COMBAT_STATE, CombatState)
 		EM:RegisterForEvent(NAME, EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, SkillCheck)
-		EM:RegisterForEvent(NAME, EVENT_ACTION_SLOT_UPDATED, OnSlotUpdated)
 		EM:RegisterForEvent(NAME, EVENT_RETICLE_TARGET_CHANGED, UpdateControl)
 
 		EM:RegisterForEvent(NAME, EVENT_EFFECT_CHANGED, OnStackChanged)
